@@ -20,4 +20,10 @@ public class Role {
     private int idRole;
 
     private String nomRole;
-    private String descriptionRole;}
+    private String descriptionRole;
+
+    public Role(String nomRole, String descriptionRole) {
+        this.nomRole = nomRole;
+        this.descriptionRole = descriptionRole;
+    }
+}
