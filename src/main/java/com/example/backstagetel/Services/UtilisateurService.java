@@ -29,9 +29,9 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
 
-    public UserDetails loadUserByUsername(String nomUser) throws UsernameNotFoundException {
-        return utilisateurRepository.findByNomUser(nomUser)
-                .orElseThrow(() -> new UsernameNotFoundException(nomUser));
+    public UserDetails loadUserByUsername(String emailuser) throws UsernameNotFoundException {
+        return utilisateurRepository.findByEmailUser(emailuser)
+                .orElseThrow(() -> new UsernameNotFoundException(emailuser));
     }
 
     public Utilisateur registerUser(UserRegistrationRequest registrationRequest) {
