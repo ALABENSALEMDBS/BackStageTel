@@ -2,6 +2,7 @@ package com.example.backstagetel.Configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +23,11 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JWTAuthorizationFilter jwtAuthorizationFilter;
+
+    public SecurityConfig(@Lazy JWTAuthorizationFilter jwtAuthorizationFilter) {
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
+    }
 
 
     @Bean
@@ -53,23 +59,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/auth/login",
                                 "/user/auth/register",
-//                                "/user/auth/logout",
+                                "/user/auth/logout",
                                 "/swagger-ui.html",
                                 "/swagger-ui/index.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                                 // "/user/getAllUsers"
                         ).permitAll()
-//                        .requestMatchers("/api/admin-only").hasAuthority("ROLE_ADMIN")
-//                        .requestMatchers(HttpMethod.GET, "/api/hh").hasAnyAuthority("ROLE_ADMIN","ROLE_DOCTOR")
+                          .requestMatchers("/user/admin-only").hasAuthority("ROLE_ADMIN")
+                          .requestMatchers(HttpMethod.GET, "/user/admin-only").hasAuthority("ROLE_ADMIN")
 //                        .requestMatchers("/api/admin-player").hasAnyAuthority("ROLE_ADMIN", "ROLE_PLAYER")
-//                        .requestMatchers("/api/player-only").hasAuthority("ROLE_PLAYER")
+                          .requestMatchers("/user/getAllUsers").hasAuthority("ROLE_CLIENT")
 //                        .requestMatchers(HttpMethod.GET, "/api/getAllUsers").hasAuthority("ROLE_DOCTOR")
 //
-//                        .anyRequest().authenticated()
+                          .anyRequest().authenticated()
                 )
-//                .addFilterBefore(jwtAuthorizationFilter,
-//                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthorizationFilter,
+                        UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();

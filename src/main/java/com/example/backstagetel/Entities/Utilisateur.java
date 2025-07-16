@@ -1,5 +1,6 @@
 package com.example.backstagetel.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -49,41 +50,46 @@ public class Utilisateur implements UserDetails {
 
 
 
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.getNomRole()));
     }
 
-
+    @JsonIgnore
     @Override
     public String getPassword() {
         return passwordUser;
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return nomUser;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
 //        return UserDetails.super.isAccountNonExpired();
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
 //        return UserDetails.super.isAccountNonLocked();
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
 //        return UserDetails.super.isCredentialsNonExpired();
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
 //        return UserDetails.super.isEnabled();

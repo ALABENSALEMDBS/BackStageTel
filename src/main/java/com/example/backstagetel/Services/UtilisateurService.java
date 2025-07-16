@@ -1,5 +1,8 @@
 package com.example.backstagetel.Services;
 
+import com.example.backstagetel.Configurations.JwtUtils;
+import com.example.backstagetel.DTO.LoginRequest;
+import com.example.backstagetel.DTO.LoginResponse;
 import com.example.backstagetel.DTO.UserRegistrationRequest;
 import com.example.backstagetel.Entities.EtatCompte;
 import com.example.backstagetel.Entities.Role;
@@ -7,6 +10,7 @@ import com.example.backstagetel.Entities.Utilisateur;
 import com.example.backstagetel.Repositories.RoleRepository;
 import com.example.backstagetel.Repositories.UtilisateurRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,13 +24,14 @@ import java.util.List;
 @AllArgsConstructor
 public class UtilisateurService implements UserDetailsService,IUtilisateurService {
 
+    JwtUtils jwtUtils;
     UtilisateurRepository utilisateurRepository;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
 
-    public UserDetails loadUserByUsername(String emailUser) throws UsernameNotFoundException {
-        return utilisateurRepository.findByEmailUser(emailUser)
-                .orElseThrow(() -> new UsernameNotFoundException(emailUser));
+    public UserDetails loadUserByUsername(String nomUser) throws UsernameNotFoundException {
+        return utilisateurRepository.findByNomUser(nomUser)
+                .orElseThrow(() -> new UsernameNotFoundException(nomUser));
     }
 
     public Utilisateur registerUser(UserRegistrationRequest registrationRequest) {
@@ -53,6 +58,24 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
         return utilisateurRepository.save(utilisateur);
 
     }
+
+
+    public LoginResponse loginUser(LoginRequest loginRequest) {
+        Utilisateur user = utilisateurRepository.findByEmailUser(loginRequest.getEmailUser())
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid username or password."));
+
+        if (!passwordEncoder.matches(loginRequest.getPasswordUser(), user.getPasswordUser())) {
+            throw new BadCredentialsException("Invalid username or password.");
+        }
+
+        String token = jwtUtils.generateToken(user);
+
+        return new LoginResponse(token,user.getRole().getNomRole());
+    }
+
+
+
+
 
     public List<Utilisateur> getAllUsers() {
         return utilisateurRepository.findAll();
