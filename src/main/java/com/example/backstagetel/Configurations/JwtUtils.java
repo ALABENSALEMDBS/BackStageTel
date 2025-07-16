@@ -26,13 +26,13 @@ public class JwtUtils {
      * Génère un token JWT à partir de l'identifiant et des rôles.
      */
     public String generateToken(Utilisateur user) {
-        return generateToken(user.getUsername(), user.getRole());
+        return generateToken(user.getEmailUser(), user.getRole());
     }
 
 
-    public String generateToken(String username, Role role) {
+    public String generateToken(String emailuser, Role role) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(emailuser)
                 .claim("role", role.getNomRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 heures
@@ -43,6 +43,8 @@ public class JwtUtils {
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
+
+
 
 
     public String extractRole(String token) {

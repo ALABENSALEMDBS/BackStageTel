@@ -53,7 +53,7 @@ public class Utilisateur implements UserDetails {
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getNomRole()));
+           return List.of(new SimpleGrantedAuthority(role.getNomRole()));
     }
 
     @JsonIgnore
@@ -65,7 +65,7 @@ public class Utilisateur implements UserDetails {
     @JsonIgnore
     @Override
     public String getUsername() {
-        return nomUser;
+        return emailUser;
     }
 
     @JsonIgnore

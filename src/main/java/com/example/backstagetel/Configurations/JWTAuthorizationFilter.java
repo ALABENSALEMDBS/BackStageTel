@@ -36,18 +36,18 @@ public class JWTAuthorizationFilter  extends OncePerRequestFilter {
         }
 
         String token = header.substring(7);
-        String username = jwtUtils.extractUsername(token);
+        String emailuser = jwtUtils.extractUsername(token);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() ==
+        if (emailuser != null && SecurityContextHolder.getContext().getAuthentication() ==
                 null) {
-            UserDetails userDetails = utilisateurService.loadUserByUsername(username);
+            UserDetails userDetails = utilisateurService.loadUserByUsername(emailuser);
 
             if (jwtUtils.validateToken(token, userDetails)) {
                 var auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(auth);
-                System.out.println("Authenticated user: " + username + " with role: " + userDetails.getAuthorities());
+                System.out.println("Authenticated user: " + emailuser + " with role: " + userDetails.getAuthorities());
             } else {
-                System.out.println("Token validation failed for user: " + username);
+                System.out.println("Token validation failed for user: " + emailuser);
             }
         } else {
             System.out.println("Username is null or context already has authentication.");
