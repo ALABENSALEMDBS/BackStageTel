@@ -80,4 +80,21 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
     public List<Utilisateur> getAllUsers() {
         return utilisateurRepository.findAll();
     }
+
+
+
+
+    public String changePasswordFromToken(String username, String oldPassword, String newPassword) {
+        Utilisateur utilisateur = utilisateurRepository.findByEmailUser(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur non trouvé"));
+
+        if (!passwordEncoder.matches(oldPassword, utilisateur.getPasswordUser())) {
+            throw new IllegalArgumentException("Ancien mot de passe incorrect");
+        }
+
+        utilisateur.setPasswordUser(passwordEncoder.encode(newPassword));
+        utilisateurRepository.save(utilisateur);
+        return "Mot de passe mis à jour avec succès";
+    }
+
 }

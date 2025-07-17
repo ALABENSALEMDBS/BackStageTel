@@ -68,7 +68,7 @@ public class SecurityConfig {
                         ).permitAll()
                           .requestMatchers("/user/admin-only").hasAuthority("ROLE_ADMIN")
                           .requestMatchers(HttpMethod.GET, "/user/admin-only").hasAuthority("ROLE_ADMIN")
-//                        .requestMatchers("/api/admin-player").hasAnyAuthority("ROLE_ADMIN", "ROLE_PLAYER")
+                          .requestMatchers("/user/change-password").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT")
                           .requestMatchers("/user/getAllUsers").hasAuthority("ROLE_CLIENT")
 //                        .requestMatchers(HttpMethod.GET, "/api/getAllUsers").hasAuthority("ROLE_DOCTOR")
 //
