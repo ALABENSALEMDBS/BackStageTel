@@ -17,8 +17,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
+
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +33,14 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
     UtilisateurRepository utilisateurRepository;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
+    private EmailService emailService;
+
+    // Déclare resetCodes pour stocker les codes temporairement
+    private final Map<String, CodeInfo> resetCodes = new ConcurrentHashMap<>();
+
+    // record CodeInfo pour contenir code + date d'expiration
+    private record CodeInfo(String code, long expirationTime) {}
+
 
     public UserDetails loadUserByUsername(String emailuser) throws UsernameNotFoundException {
         return utilisateurRepository.findByEmailUser(emailuser)
@@ -95,6 +108,24 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
         utilisateur.setPasswordUser(passwordEncoder.encode(newPassword));
         utilisateurRepository.save(utilisateur);
         return "Mot de passe mis à jour avec succès";
+    }
+
+
+
+
+    public void sendResetCode(String email) {
+        Utilisateur user = utilisateurRepository.findByEmailUser(email)
+                .orElseThrow(() -> new RuntimeException("Email introuvable"));
+
+        String code = String.format("%06d", new Random().nextInt(999999));
+        long expirationTime = System.currentTimeMillis() + 5 * 60 * 1000; // 5 minutes
+
+        resetCodes.put(email, new CodeInfo(code, expirationTime));
+
+        // ✅ Envoyer le mail réellement
+        String subject = "Code de réinitialisation de mot de passe";
+        String message = "Bonjour,\n\nVoici votre code de réinitialisation : " + code + "\nIl est valable 5 minutes.";
+        emailService.send(email, subject, message);
     }
 
 }
