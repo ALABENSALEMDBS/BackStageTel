@@ -1,9 +1,6 @@
 package com.example.backstagetel.Controlleurs;
 
-import com.example.backstagetel.DTO.ChangePasswordRequest;
-import com.example.backstagetel.DTO.LoginRequest;
-import com.example.backstagetel.DTO.LoginResponse;
-import com.example.backstagetel.DTO.UserRegistrationRequest;
+import com.example.backstagetel.DTO.*;
 import com.example.backstagetel.Entities.Utilisateur;
 import com.example.backstagetel.Services.UtilisateurService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,4 +63,18 @@ public class UtilisateurController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        String email = request.getEmail();
+        try {
+            utilisateurService.sendResetCode(email);
+            return ResponseEntity.ok("Code envoyé par email");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }
