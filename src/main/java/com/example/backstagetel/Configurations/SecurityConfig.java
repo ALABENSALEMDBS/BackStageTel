@@ -64,7 +64,8 @@ public class SecurityConfig {
                                 "/swagger-ui/index.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/user/forgot-password"
+                                "/user/forgot-password",
+                                "user/reset-password"
                         ).permitAll()
                           .requestMatchers("/user/admin-only").hasAuthority("ROLE_ADMIN")
                           .requestMatchers(HttpMethod.GET, "/user/admin-only").hasAuthority("ROLE_ADMIN")
