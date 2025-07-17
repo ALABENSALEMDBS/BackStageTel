@@ -118,7 +118,7 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
                 .orElseThrow(() -> new RuntimeException("Email introuvable"));
 
         String code = String.format("%06d", new Random().nextInt(999999));
-        long expirationTime = System.currentTimeMillis() + 5 * 60 * 1000; // 5 minutes
+        long expirationTime = System.currentTimeMillis() + 1 * 60 * 1000; // 5 minutes
 
         resetCodes.put(email, new CodeInfo(code, expirationTime));
 
@@ -126,6 +126,28 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
         String subject = "Code de réinitialisation de mot de passe";
         String message = "Bonjour,\n\nVoici votre code de réinitialisation : " + code + "\nIl est valable 5 minutes.";
         emailService.send(email, subject, message);
+    }
+
+
+    public void resetPassword(String email, String code, String newPassword) {
+        CodeInfo codeInfo = resetCodes.get(email);
+
+        if (codeInfo == null || !codeInfo.code().equals(code)) {
+            throw new RuntimeException("Code invalide");
+        }
+
+        if (System.currentTimeMillis() > codeInfo.expirationTime()) {
+            resetCodes.remove(email); // optionnel
+            throw new RuntimeException("Code expiré");
+        }
+
+        Utilisateur user = utilisateurRepository.findByEmailUser(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+        user.setPasswordUser(passwordEncoder.encode(newPassword));
+        utilisateurRepository.save(user);
+
+        resetCodes.remove(email); // Supprimer le code après succès
     }
 
 }

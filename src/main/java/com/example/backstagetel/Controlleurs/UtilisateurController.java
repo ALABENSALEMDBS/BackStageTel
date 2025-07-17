@@ -77,4 +77,18 @@ public class UtilisateurController {
         }
     }
 
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest request) {
+        try {
+            utilisateurService.resetPassword(
+                    request.getEmail(),
+                    request.getCode(),
+                    request.getNewPassword()
+            );
+            return ResponseEntity.ok("Mot de passe réinitialisé avec succès");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }
