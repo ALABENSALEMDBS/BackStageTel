@@ -124,7 +124,18 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
 
         // ✅ Envoyer le mail réellement
         String subject = "Code de réinitialisation de mot de passe";
-        String message = "Bonjour,\n\nVoici votre code de réinitialisation : " + code + "\nIl est valable 5 minutes.";
+       // String message = "Bonjour,\n\nVoici votre code de réinitialisation : " + code + "\nIl est valable une minute.";
+
+        String message = "<html>" +
+                "<body style='font-family: Arial, sans-serif;'>" +
+                "<h2 style='color: #2e6c80;'>Code de réinitialisation</h2>" +
+                "<p>Bonjour,</p>" +
+                "<p>Voici votre code de réinitialisation :</p>" +
+                "<div style='font-size: 24px; font-weight: bold; color: #e74c3c; margin: 10px 0;'>" + code + "</div>" +
+                "<p>Ce code est valable pendant <strong>1 minute</strong>.</p>" +
+                "<br><p>Merci,<br>L'équipe de support</p>" +
+                "</body></html>";
+
         emailService.send(email, subject, message);
     }
 
