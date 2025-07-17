@@ -1,5 +1,6 @@
 package com.example.backstagetel.Controlleurs;
 
+import com.example.backstagetel.DTO.ChangePasswordRequest;
 import com.example.backstagetel.DTO.LoginRequest;
 import com.example.backstagetel.DTO.LoginResponse;
 import com.example.backstagetel.DTO.UserRegistrationRequest;
@@ -7,7 +8,10 @@ import com.example.backstagetel.Entities.Utilisateur;
 import com.example.backstagetel.Services.UtilisateurService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +50,20 @@ public class UtilisateurController {
         String username = authentication.getName();
 
         return String.format("Hello %s! This route is accessible by ADMIN only.", username);
+    }
+
+
+
+
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request, Authentication authentication) {
+        try {
+            String username = authentication.getName(); // récupéré depuis le token
+            String result = utilisateurService.changePasswordFromToken(username, request.getOldPassword(), request.getNewPassword());
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }
