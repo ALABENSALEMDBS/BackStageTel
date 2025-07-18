@@ -12,8 +12,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "Gestion Utilisateur")
 @RestController
@@ -88,6 +96,50 @@ public class UtilisateurController {
             return ResponseEntity.ok("Mot de passe réinitialisé avec succès");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+
+
+
+
+    private final String uploadDir = "C:/xampp/htdocs/document/";
+
+    @PostMapping("/upload")
+    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
+        // Check if the file is null or empty
+        if (file == null || file.isEmpty()) {
+            return new ResponseEntity<>(Map.of("error", "No file was uploaded"), HttpStatus.BAD_REQUEST);
+        }
+
+        try {
+
+            String fileName = file.getOriginalFilename();
+
+            Path filePath = Paths.get(uploadDir, fileName); // Corrected path
+
+            // Create the upload directory if it doesn't exist
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs(); // Create the directory including any necessary parent directories.
+            }
+
+            // Save the file
+            Files.write(filePath, file.getBytes());
+
+            // Create the file URL (IMPORTANT: Adjust this based on your webserver setup)
+            String fileUrl = "http://localhost/document/" + fileName;  // IMPORTANT
+
+            // Create a success response
+            Map<String, String> response = new HashMap<>();
+            response.put("url", fileUrl);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (IOException e) {
+            // Handle the exception (log it, etc.)
+            System.err.println("Error uploading file: " + e.getMessage());  // Log the full error message
+            e.printStackTrace();  // VERY IMPORTANT:  Log the stack trace for debugging
+            return new ResponseEntity<>(Map.of("error", "Failed to upload file: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

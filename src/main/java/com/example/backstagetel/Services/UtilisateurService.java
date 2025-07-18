@@ -118,7 +118,7 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
                 .orElseThrow(() -> new RuntimeException("Email introuvable"));
 
         String code = String.format("%06d", new Random().nextInt(999999));
-        long expirationTime = System.currentTimeMillis() + 1 * 60 * 1000; // 5 minutes
+        long expirationTime = System.currentTimeMillis() + 2 * 60 * 1000; // 2 minutes
 
         resetCodes.put(email, new CodeInfo(code, expirationTime));
 
@@ -132,7 +132,7 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
                 "<p>Bonjour,</p>" +
                 "<p>Voici votre code de réinitialisation :</p>" +
                 "<div style='font-size: 24px; font-weight: bold; color: #e74c3c; margin: 10px 0;'>" + code + "</div>" +
-                "<p>Ce code est valable pendant <strong>1 minute</strong>.</p>" +
+                "<p>Ce code est valable pendant <strong>2 minutes</strong>.</p>" +
                 "<br><p>Merci,<br>L'équipe de support</p>" +
                 "</body></html>";
 
