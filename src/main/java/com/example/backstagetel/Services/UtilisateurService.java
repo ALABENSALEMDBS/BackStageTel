@@ -83,7 +83,7 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
 
         String token = jwtUtils.generateToken(user);
 
-        return new LoginResponse(token,user.getRole().getNomRole());
+        return new LoginResponse(token,user.getRole().getNomRole(),user.getIdUser(),user.getNomUser(), user.getPrenomUser(), user.getEmailUser(),user.getPhotoUser(), user.getDocumentContrat(), user.getCreatedAt(), user.getNumeroLigne(),user.getEtatCompte());
     }
 
 
