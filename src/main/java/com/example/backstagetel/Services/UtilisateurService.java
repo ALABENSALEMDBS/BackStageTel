@@ -1,6 +1,7 @@
 package com.example.backstagetel.Services;
 
 import com.example.backstagetel.Configurations.JwtUtils;
+import com.example.backstagetel.DTO.ChangePhoto;
 import com.example.backstagetel.DTO.LoginRequest;
 import com.example.backstagetel.DTO.LoginResponse;
 import com.example.backstagetel.DTO.UserRegistrationRequest;
@@ -18,11 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -159,6 +156,20 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
         utilisateurRepository.save(user);
 
         resetCodes.remove(email); // Supprimer le code après succès
+    }
+
+    public ChangePhoto updatephoto(int idUser, ChangePhoto changePhoto) {
+        Optional<Utilisateur> existingUser = utilisateurRepository.findById(idUser);
+
+        if (!existingUser.isPresent()) {
+            throw new RuntimeException("Formation non trouvée !");
+        }
+        Utilisateur user = existingUser.get();
+        user.setPhotoUser(changePhoto.getPhotoUser());
+
+                utilisateurRepository.save(user);
+        return new ChangePhoto(user.getRole().getNomRole(),user.getIdUser(),user.getNomUser(), user.getPrenomUser(), user.getEmailUser(),user.getPhotoUser(), user.getDocumentContrat(), user.getCreatedAt(), user.getNumeroLigne(),user.getEtatCompte());
+
     }
 
 }

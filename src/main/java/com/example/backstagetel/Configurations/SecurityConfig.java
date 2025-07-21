@@ -70,9 +70,9 @@ public class SecurityConfig {
                         ).permitAll()
                           .requestMatchers("/user/admin-only").hasAuthority("ROLE_ADMIN")
                           .requestMatchers(HttpMethod.GET, "/user/admin-only").hasAuthority("ROLE_ADMIN")
-                          .requestMatchers("/user/change-password").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT")
+                          .requestMatchers("/user/change-password").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT", "ROLE_AGENT")
                           .requestMatchers("/user/getAllUsers").hasAuthority("ROLE_CLIENT")
-//                        .requestMatchers(HttpMethod.GET, "/api/getAllUsers").hasAuthority("ROLE_DOCTOR")
+                          .requestMatchers( "/user/update-photo").hasAnyAuthority("ROLE_CLIENT", "ROLE_AGENT", "ROLE_ADMIN")
 //
                           .anyRequest().authenticated()
                 )

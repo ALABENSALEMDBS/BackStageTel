@@ -9,4 +9,6 @@ public interface IUtilisateurService {
     public List<Utilisateur> getAllUsers();
 
     public String changePasswordFromToken(String username, String oldPassword, String newPassword);
+
+    public void resetPassword(String email, String code, String newPassword);
 }
