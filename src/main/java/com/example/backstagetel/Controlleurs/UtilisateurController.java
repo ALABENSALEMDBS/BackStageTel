@@ -101,6 +101,14 @@ public class UtilisateurController {
 
 
 
+    @PutMapping("/update-photo/{id}")
+    public ResponseEntity<ChangePhoto> updatePhoto( @PathVariable int id, @RequestBody ChangePhoto changePhoto) {
+        ChangePhoto updatedUser = utilisateurService.updatephoto(id, changePhoto);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+
+
 
 
     private final String uploadDir = "C:/xampp/htdocs/document/";
