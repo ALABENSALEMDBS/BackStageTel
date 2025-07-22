@@ -73,6 +73,9 @@ public class SecurityConfig {
                           .requestMatchers("/user/change-password").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT", "ROLE_AGENT")
                           .requestMatchers("/user/getAllUsers").hasAuthority("ROLE_CLIENT")
                           .requestMatchers( "/user/update-photo").hasAnyAuthority("ROLE_CLIENT", "ROLE_AGENT", "ROLE_ADMIN")
+                          .requestMatchers( "/user/clients").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN")
+                          .requestMatchers("/user/toggle-statut").hasAuthority("ROLE_ADMIN")
+
 //
                           .anyRequest().authenticated()
                 )

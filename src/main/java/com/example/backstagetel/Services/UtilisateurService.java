@@ -172,4 +172,25 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
 
     }
 
+
+
+
+    public List<Utilisateur> getAllClients() {
+        return utilisateurRepository.findByRole_NomRole("ROLE_CLIENT");
+    }
+
+    public Utilisateur toggleStatutCompte(int userId) {
+        Utilisateur utilisateur = utilisateurRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec ID : " + userId));
+
+        if (utilisateur.getEtatCompte() == EtatCompte.ACTIF) {
+            utilisateur.setEtatCompte(EtatCompte.INACTIF);
+        } else {
+            utilisateur.setEtatCompte(EtatCompte.ACTIF);
+        }
+
+        return utilisateurRepository.save(utilisateur);
+    }
+
+
 }

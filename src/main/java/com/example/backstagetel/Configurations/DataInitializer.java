@@ -38,24 +38,32 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         if (utilisateurRepository.count() == 0) {
-            Role adminRole = roleRepository.findByNomRole("ROLE_ADMIN").orElseThrow(() -> new RuntimeException("Role not found"));
+            Role adminRole = roleRepository.findByNomRole("ROLE_ADMIN").orElseThrow(() -> new RuntimeException("Role admin not found"));
+            Role agentRole = roleRepository.findByNomRole("ROLE_AGENT").orElseThrow(() -> new RuntimeException("Role agent not found"));
 
             Utilisateur admin = new Utilisateur();
+            Utilisateur agent = new Utilisateur();
 
             admin.setNomUser("Admin");
             admin.setPrenomUser("BenAdmin");
             admin.setPasswordUser(passwordEncoder.encode("admin123"));
             admin.setPhotoUser("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTul6F3Ak5Mb-qnsUamAvEsxpoxEmuQx6KjEx2HE6oDzVeU5KfZuXlrNoHO_f-55f9ceCs&usqp=CAU");
-            admin.setEmailUser("admin@gmail.com");
+            admin.setEmailUser("alabensalem.iset@gmail.com");
             admin.setCreatedAt(new Date());
             admin.setRole(adminRole);
-
-//            admin.setNumeroLigne(28132996);
-//            admin.setDocumentContrat("ffffg");
-
             admin.setEtatCompte(EtatCompte.ACTIF);
 
+            agent.setNomUser("Agent");
+            agent.setPrenomUser("BenAgent");
+            agent.setPasswordUser(passwordEncoder.encode("agent123"));
+            agent.setPhotoUser("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTul6F3Ak5Mb-qnsUamAvEsxpoxEmuQx6KjEx2HE6oDzVeU5KfZuXlrNoHO_f-55f9ceCs&usqp=CAU");
+            agent.setEmailUser("ala.bensalem144@gmail.com");
+            agent.setCreatedAt(new Date());
+            agent.setRole(agentRole);
+            agent.setEtatCompte(EtatCompte.ACTIF);
+
             utilisateurRepository.save(admin);
+            utilisateurRepository.save(agent);
         }
 
     }
