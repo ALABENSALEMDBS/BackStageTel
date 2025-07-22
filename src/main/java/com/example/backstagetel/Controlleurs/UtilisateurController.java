@@ -108,7 +108,17 @@ public class UtilisateurController {
     }
 
 
+    @GetMapping("/clients")
+    public ResponseEntity<List<Utilisateur>> getAllClients() {
+        List<Utilisateur> clients = utilisateurService.getAllClients();
+        return ResponseEntity.ok(clients);
+    }
 
+    @PutMapping("/toggle-statut/{id}")
+    public ResponseEntity<Utilisateur> toggleStatut(@PathVariable int id) {
+        Utilisateur updatedUser = utilisateurService.toggleStatutCompte(id);
+        return ResponseEntity.ok(updatedUser);
+    }
 
 
     private final String uploadDir = "C:/xampp/htdocs/document/";
