@@ -76,6 +76,10 @@ public class SecurityConfig {
                           .requestMatchers( "/user/clients").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN")
                           .requestMatchers("/user/toggle-statut").hasAuthority("ROLE_ADMIN")
                           .requestMatchers("/user/creercomptebyadmin").hasAuthority("ROLE_ADMIN")
+                          .requestMatchers("/user/agents").hasAuthority("ROLE_ADMIN")
+                          .requestMatchers("/user/delete").hasAuthority("ROLE_ADMIN")
+
+
 
 
 //
