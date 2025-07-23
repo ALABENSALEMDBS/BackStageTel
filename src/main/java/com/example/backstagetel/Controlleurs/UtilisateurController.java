@@ -114,6 +114,12 @@ public class UtilisateurController {
         return ResponseEntity.ok(clients);
     }
 
+    @GetMapping("/agents")
+    public ResponseEntity<List<Utilisateur>> getAllAgents() {
+        List<Utilisateur> agents = utilisateurService.getAllAgents();
+        return ResponseEntity.ok(agents);
+    }
+
     @PutMapping("/toggle-statut/{id}")
     public ResponseEntity<Utilisateur> toggleStatut(@PathVariable int id) {
         Utilisateur updatedUser = utilisateurService.toggleStatutCompte(id);
@@ -126,6 +132,17 @@ public class UtilisateurController {
     public ResponseEntity<Utilisateur> creerCompteByAdmin(@RequestBody UserRegistrationRequest userRegistrationRequest) {
         Utilisateur utilisateur = utilisateurService.creerCompteByAdmin(userRegistrationRequest);
         return ResponseEntity.ok(utilisateur);
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+        try {
+            utilisateurService.deleteuser(id);
+            return ResponseEntity.ok("Utilisateur supprimé avec succès.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 

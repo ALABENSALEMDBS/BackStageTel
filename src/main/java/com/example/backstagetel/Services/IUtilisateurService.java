@@ -13,5 +13,6 @@ public interface IUtilisateurService {
     public void resetPassword(String email, String code, String newPassword);
 
     public List<Utilisateur> getAllClients();
+    public List<Utilisateur> getAllAgents();
 
 }
