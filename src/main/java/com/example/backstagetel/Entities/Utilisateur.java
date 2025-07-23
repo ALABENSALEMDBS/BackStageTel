@@ -35,15 +35,19 @@ public class Utilisateur implements UserDetails {
     @Enumerated(EnumType.STRING)
     private EtatCompte etatCompte;
 
+    @JsonIgnore
     @ManyToOne
     private Role role;
 
+    @JsonIgnore
     @OneToMany (cascade = CascadeType.ALL)
     Set<Avis> avis= new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "utilisateurRens", cascade = CascadeType.ALL)
     Set<Renseignement> renseignements= new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "utilisateurRecl", cascade = CascadeType.ALL)
     Set<Reclamation> reclamations= new HashSet<>();
 

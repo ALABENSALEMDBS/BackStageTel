@@ -121,6 +121,17 @@ public class UtilisateurController {
     }
 
 
+
+    @PostMapping("/creercomptebyadmin")
+    public ResponseEntity<Utilisateur> creerCompteByAdmin(@RequestBody UserRegistrationRequest userRegistrationRequest) {
+        Utilisateur utilisateur = utilisateurService.creerCompteByAdmin(userRegistrationRequest);
+        return ResponseEntity.ok(utilisateur);
+    }
+
+
+
+
+
     private final String uploadDir = "C:/xampp/htdocs/document/";
 
     @PostMapping("/upload")

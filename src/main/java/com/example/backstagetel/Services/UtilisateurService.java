@@ -44,6 +44,63 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
                 .orElseThrow(() -> new UsernameNotFoundException(emailuser));
     }
 
+    public Utilisateur creerCompteByAdmin(UserRegistrationRequest userRegistrationRequest) {
+        Utilisateur utilisateur = new Utilisateur();
+
+        utilisateur.setNomUser(userRegistrationRequest.getNomUser());
+        utilisateur.setPrenomUser(userRegistrationRequest.getPrenomUser());
+        utilisateur.setEmailUser(userRegistrationRequest.getEmailUser());
+
+        String code = String.format("%06d", new Random().nextInt(9999999));
+        System.out.println(code); //  delete it after testing hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+        utilisateur.setPasswordUser(passwordEncoder.encode(code));
+
+        if (userRegistrationRequest.getNumeroLigne() != 0) {
+            utilisateur.setNumeroLigne(userRegistrationRequest.getNumeroLigne());
+        }
+
+        if (userRegistrationRequest.getPhotoUser() != null && !userRegistrationRequest.getPhotoUser().isEmpty()) {
+            utilisateur.setPhotoUser(userRegistrationRequest.getPhotoUser());
+        }
+        if (userRegistrationRequest.getDocumentContrat() != null && !userRegistrationRequest.getDocumentContrat().isEmpty()) {
+            utilisateur.setDocumentContrat(userRegistrationRequest.getDocumentContrat());
+        }
+
+        utilisateur.setCreatedAt(new Date());
+        utilisateur.setEtatCompte(EtatCompte.ACTIF);
+
+        if (userRegistrationRequest.getIdRole() != 0) {
+            Role role = roleRepository.findById(userRegistrationRequest.getIdRole())
+                    .orElseThrow(() -> new RuntimeException("Rôle non trouvé avec l'ID : " + userRegistrationRequest.getIdRole()));
+            utilisateur.setRole(role);
+        }
+
+        String subject = "votre compte est creeé par d'administration";
+        String message = "<html>" +
+                "<body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>" +
+                "<div style='background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);'>" +
+                "<h2 style='color: #2e6c80;'>Création de compte réussie</h2>" +
+                "<p>Bonjour,</p>" +
+                "<p>Votre compte a été <strong>créé avec succès</strong> par l'administrateur.</p>" +
+                "<p>Voici vos informations de connexion :</p>" +
+
+                "<ul style='font-size: 16px;'>" +
+                "<li><strong>Identifiant (Email) :</strong> " + userRegistrationRequest.getEmailUser() + "</li>" +
+                "<li><strong>Mot de passe temporaire :</strong> <span style='color: #e74c3c; font-weight: bold;'>" + code + "</span></li>" +
+                "</ul>" +
+
+                "<p style='color: #d35400;'><strong>Important :</strong> Veuillez changer votre mot de passe après votre première connexion pour des raisons de sécurité.</p>" +
+
+                "<br><p>Merci,<br>L'équipe de support</p>" +
+                "</div>" +
+                "</body></html>";
+
+
+        emailService.send(userRegistrationRequest.getEmailUser(), subject, message);
+
+        return utilisateurRepository.save(utilisateur);
+    }
+
     public Utilisateur registerUser(UserRegistrationRequest registrationRequest) {
         Utilisateur utilisateur = new Utilisateur();
 
