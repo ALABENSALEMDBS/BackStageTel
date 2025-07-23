@@ -25,7 +25,7 @@ public class UserRegistrationRequest {
 
 //    String etatCompte;
 //
-//    String role;
+    int idRole;
 
     public UserRegistrationRequest() {
     }
