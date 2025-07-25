@@ -1,5 +1,6 @@
 package com.example.backstagetel.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -33,6 +34,7 @@ public class Reclamation {
     private String descriptionReponRecl;
     private Date dateReponRecl;
 
+    @JsonIgnore
     @ManyToOne
     Utilisateur utilisateurRecl;
 

@@ -15,10 +15,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*").allowCredentials(true);
 
 
-//        registry.addMapping("/api/**") // autre endpoint
-//                .allowedOrigins("http://localhost:4200")
-//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                .allowedHeaders("*")
-//                .allowCredentials(true);
+        registry.addMapping("/reclamation/**") // autre endpoint
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }

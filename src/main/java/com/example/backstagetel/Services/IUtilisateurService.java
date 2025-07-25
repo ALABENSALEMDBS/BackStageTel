@@ -14,5 +14,6 @@ public interface IUtilisateurService {
 
     public List<Utilisateur> getAllClients();
     public List<Utilisateur> getAllAgents();
+    public void deleteuser(int idUser);
 
 }

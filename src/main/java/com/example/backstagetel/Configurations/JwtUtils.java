@@ -25,20 +25,31 @@ public class JwtUtils {
     /**
      * Génère un token JWT à partir de l'identifiant et des rôles.
      */
+//    public String generateToken(Utilisateur user) {
+//        return generateToken(user.getEmailUser(), user.getRole());
+//    }
+
+
+//    public String generateToken(String emailuser, Role role) {
+//        return Jwts.builder()
+//                .setSubject(emailuser)
+//                .claim("role", role.getNomRole())
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 heures
+//                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
+//                .compact();
+//    }
+
     public String generateToken(Utilisateur user) {
-        return generateToken(user.getEmailUser(), user.getRole());
-    }
-
-
-    public String generateToken(String emailuser, Role role) {
         return Jwts.builder()
-                .setSubject(emailuser)
-                .claim("role", role.getNomRole())
+                .setSubject(user.getEmailUser())
+                .claim("roles", List.of(user.getRole().getNomRole())) // stocker la liste des rôles
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 heures
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
@@ -47,8 +58,12 @@ public class JwtUtils {
 
 
 
-    public String extractRole(String token) {
-        return extractAllClaims(token).get("role", String.class);
+//    public String extractRole(String token) {
+//        return extractAllClaims(token).get("role", String.class);
+//    }
+
+     public List<String> extractRoles(String token) {
+          return extractAllClaims(token).get("roles", List.class);
     }
 
     public boolean isTokenExpired(String token) {
