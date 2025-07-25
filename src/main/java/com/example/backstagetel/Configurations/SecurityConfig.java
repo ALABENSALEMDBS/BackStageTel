@@ -72,13 +72,17 @@ public class SecurityConfig {
                           .requestMatchers(HttpMethod.GET, "/user/admin-only").hasAuthority("ROLE_ADMIN")
                           .requestMatchers("/user/change-password").hasAnyAuthority("ROLE_ADMIN", "ROLE_CLIENT", "ROLE_AGENT")
                           .requestMatchers("/user/getAllUsers").hasAuthority("ROLE_CLIENT")
-                          .requestMatchers( "/user/update-photo").hasAnyAuthority("ROLE_CLIENT", "ROLE_AGENT", "ROLE_ADMIN")
+                          .requestMatchers( "/user/update-photo/{id}").hasAnyAuthority("ROLE_CLIENT", "ROLE_AGENT", "ROLE_ADMIN")
                           .requestMatchers( "/user/clients").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN")
-                          .requestMatchers("/user/toggle-statut").hasAuthority("ROLE_ADMIN")
+                          .requestMatchers(HttpMethod.PUT,"/user/toggle-statut/{id}").hasAnyAuthority("ROLE_ADMIN")
                           .requestMatchers("/user/creercomptebyadmin").hasAuthority("ROLE_ADMIN")
                           .requestMatchers("/user/agents").hasAuthority("ROLE_ADMIN")
-                          .requestMatchers("/user/delete").hasAuthority("ROLE_ADMIN")
-
+                          .requestMatchers("/user/delete/{id}").hasAuthority("ROLE_ADMIN")
+                          .requestMatchers("/reclamation/ajouter/{idUser}").hasAuthority("ROLE_CLIENT")
+                          .requestMatchers("/reclamation/getReclByUser/{idUser}").hasAnyAuthority("ROLE_CLIENT", "ROLE_AGENT", "ROLE_ADMIN")
+                          .requestMatchers("/reclamation/delete/{id}").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN","ROLE_CLIENT")
+                          .requestMatchers(HttpMethod.GET, "/reclamation/getReclamations", "/reclamation/reclamationBYId/{idReclamation}").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN")
+                          .requestMatchers("/reclamation/modifierRecl/{id}").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN","ROLE_CLIENT")
 
 
 
