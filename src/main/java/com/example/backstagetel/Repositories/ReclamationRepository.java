@@ -5,11 +5,15 @@ import com.example.backstagetel.Entities.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface ReclamationRepository extends JpaRepository<Reclamation, Integer> {
 
     List<Reclamation> findByUtilisateurRecl(Utilisateur utilisateur);
+
+    boolean existsByUtilisateurReclAndDateReclBetween(Utilisateur utilisateur, Date start, Date end);
+
 
 }
