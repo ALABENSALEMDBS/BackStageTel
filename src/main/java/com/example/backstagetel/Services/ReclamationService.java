@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -88,6 +89,48 @@ public class ReclamationService implements IReclamationService {
         existingReclamation.setDocumentRecl(newReclamation.getDocumentRecl());
 
         return reclamationRepository.save(existingReclamation);
+    }
+
+    public Reclamation makeReclamationEnCours(int idReclamation) {
+        Reclamation existingReclamation = reclamationRepository.findById(idReclamation)
+                .orElseThrow(() -> new RuntimeException("Réclamation non trouvée avec ID : " + idReclamation));
+
+        existingReclamation.setEtatRecl(EtatRecl.EN_COURS);
+        return reclamationRepository.save(existingReclamation);
+    }
+
+
+    public Reclamation repondreReclamation(int idReclamation, Reclamation newReclamation) {
+        Reclamation existingReclamation = reclamationRepository.findById(idReclamation)
+                .orElseThrow(() -> new RuntimeException("Réclamation non trouvée avec ID : " + idReclamation));
+
+        existingReclamation.setDescriptionReponRecl(newReclamation.getDescriptionReponRecl());
+        existingReclamation.setDateReponRecl(new Date());
+        existingReclamation.setEtatRecl(EtatRecl.TRAITEE);
+
+        Reclamation savedReclamation = reclamationRepository.save(existingReclamation);
+        if (savedReclamation != null) {
+            String subject = "Votre Reponse de la raclamation avec l'id "+ existingReclamation.getIdRecl()+ " a été créé par l'agent";
+            String message = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;'>" +
+                    "<div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);'>" +
+                    "<h2 style='color: #2e6c80;'>Réponse à votre réclamation n°" + existingReclamation.getIdRecl() + "</h2>" +
+                    "<p>Bonjour,</p>" +
+                    "<p>Nous vous informons que votre réclamation a été traitée. Voici la réponse apportée par notre équipe :</p>" +
+                    "<blockquote style='border-left: 4px solid #2e6c80; margin: 20px 0; padding: 10px 20px; background-color: #f0f8ff;'>" +
+                    existingReclamation.getDescriptionReponRecl() +
+                    "</blockquote>" +
+                    "<p>Date de réponse : <strong>" + new SimpleDateFormat("dd/MM/yyyy").format(existingReclamation.getDateReponRecl()) + "</strong></p>" +
+                    "<p>Nous restons à votre disposition pour toute information complémentaire.</p>" +
+                    "<br><p>Cordialement,<br><strong>L'équipe de support</strong></p>" +
+                    "</div>" +
+                    "</body></html>";
+
+
+            emailService.send(existingReclamation.getUtilisateurRecl().getEmailUser(), subject, message);
+        }
+
+        return savedReclamation;
     }
 
 }
