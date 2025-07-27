@@ -67,4 +67,20 @@ public class ReclamationController {
         }
     }
 
+
+    @PutMapping("/en-cours/{idReclamation}")
+    public ResponseEntity<Reclamation> mettreReclamationEnCours(@PathVariable int idReclamation) {
+        Reclamation updatedReclamation = reclamationService.makeReclamationEnCours(idReclamation);
+        return ResponseEntity.ok(updatedReclamation);
+    }
+
+    @PutMapping("/repondre/{idReclamation}")
+    public ResponseEntity<Reclamation> repondreReclamation(
+            @PathVariable int idReclamation,
+            @RequestBody Reclamation newReclamation) {
+
+        Reclamation updatedReclamation = reclamationService.repondreReclamation(idReclamation, newReclamation);
+        return ResponseEntity.ok(updatedReclamation);
+    }
+
 }

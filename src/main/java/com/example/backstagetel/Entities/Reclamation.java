@@ -34,7 +34,7 @@ public class Reclamation {
     private String descriptionReponRecl;
     private Date dateReponRecl;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToOne
     Utilisateur utilisateurRecl;
 

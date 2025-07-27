@@ -18,5 +18,9 @@ public interface IReclamationService {
 
     public Reclamation modifierReclamation(int idReclamation, Reclamation newReclamation);
 
+    public Reclamation makeReclamationEnCours(int idReclamation);
+
+    public Reclamation repondreReclamation(int idReclamation, Reclamation newReclamation);
+
 
 }
