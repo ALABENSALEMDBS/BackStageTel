@@ -1,6 +1,7 @@
 package com.example.backstagetel.Services;
 
 import com.example.backstagetel.Configurations.JwtUtils;
+import com.example.backstagetel.Entities.EtatCompte;
 import com.example.backstagetel.Entities.EtatRecl;
 import com.example.backstagetel.Entities.Reclamation;
 import com.example.backstagetel.Entities.Utilisateur;
@@ -47,12 +48,17 @@ public class ReclamationService implements IReclamationService {
             throw new RuntimeException("Vous ne pouvez soumettre qu'une seule réclamation par heure.");
         }
 
-        // Création de la réclamation
-        reclamation.setEtatRecl(EtatRecl.EN_ATTENTE); // état par défaut
-        reclamation.setDateRecl(new Date()); // date de création actuelle
-        reclamation.setUtilisateurRecl(utilisateur);
-        return reclamationRepository.save(reclamation);
+        if(utilisateur.getEtatCompte().equals(EtatCompte.ACTIF) )
+        {
+           // Création de la réclamation
+           reclamation.setEtatRecl(EtatRecl.EN_ATTENTE); // état par défaut
+           reclamation.setDateRecl(new Date()); // date de création actuelle
+           reclamation.setUtilisateurRecl(utilisateur);
+           return reclamationRepository.save(reclamation);
+        }
+        throw new RuntimeException("compte inactif !!!!!!!");
     }
+
 
     public List<Reclamation> getReclamations() {
         return reclamationRepository.findAll();
