@@ -74,6 +74,12 @@ public class ReclamationController {
         return ResponseEntity.ok(updatedReclamation);
     }
 
+    @PutMapping("/rejetee/{idReclamation}")
+    public ResponseEntity<Reclamation> mettreReclamationRejetee(@PathVariable int idReclamation) {
+        Reclamation updatedReclamation = reclamationService.makeReclamationRejetee(idReclamation);
+        return ResponseEntity.ok(updatedReclamation);
+    }
+
     @PutMapping("/repondre/{idReclamation}")
     public ResponseEntity<Reclamation> repondreReclamation(
             @PathVariable int idReclamation,
