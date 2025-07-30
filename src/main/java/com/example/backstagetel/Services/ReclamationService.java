@@ -105,6 +105,14 @@ public class ReclamationService implements IReclamationService {
         return reclamationRepository.save(existingReclamation);
     }
 
+    public Reclamation makeReclamationRejetee(int idReclamation) {
+        Reclamation existingReclamation = reclamationRepository.findById(idReclamation)
+                .orElseThrow(() -> new RuntimeException("Réclamation non trouvée avec ID : " + idReclamation));
+
+        existingReclamation.setEtatRecl(EtatRecl.REJETEE);
+        return reclamationRepository.save(existingReclamation);
+    }
+
 
     public Reclamation repondreReclamation(int idReclamation, Reclamation newReclamation) {
         Reclamation existingReclamation = reclamationRepository.findById(idReclamation)

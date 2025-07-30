@@ -84,6 +84,8 @@ public class SecurityConfig {
                           .requestMatchers(HttpMethod.GET, "/reclamation/getReclamations", "/reclamation/reclamationBYId/{idReclamation}").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN")
                           .requestMatchers("/reclamation/modifierRecl/{id}").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN","ROLE_CLIENT")
                           .requestMatchers("/reclamation/en-cours/{idReclamation}").hasAuthority( "ROLE_AGENT")
+                          .requestMatchers("/reclamation/rejetee/{idReclamation}").hasAuthority( "ROLE_AGENT")
+
                           .requestMatchers("/reclamation/repondre/{idReclamation}").hasAuthority( "ROLE_AGENT")
 
 

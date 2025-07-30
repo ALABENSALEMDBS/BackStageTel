@@ -20,6 +20,8 @@ public interface IReclamationService {
 
     public Reclamation makeReclamationEnCours(int idReclamation);
 
+    public Reclamation makeReclamationRejetee(int idReclamation);
+
     public Reclamation repondreReclamation(int idReclamation, Reclamation newReclamation);
 
 
