@@ -9,6 +9,8 @@ import com.example.backstagetel.Repositories.ReclamationRepository;
 import com.example.backstagetel.Repositories.RoleRepository;
 import com.example.backstagetel.Repositories.UtilisateurRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -85,16 +87,23 @@ public class ReclamationService implements IReclamationService {
     }
 
 
-    public Reclamation modifierReclamation(int idReclamation, Reclamation newReclamation) {
+    public ResponseEntity <?> modifierReclamation(int idReclamation, Reclamation newReclamation) {
         Reclamation existingReclamation = reclamationRepository.findById(idReclamation)
                 .orElseThrow(() -> new RuntimeException("Réclamation non trouvée avec ID : " + idReclamation));
 
+
+        if(!existingReclamation.getEtatRecl().equals(EtatRecl.EN_ATTENTE))
+        {
+            //throw new IllegalStateException("La réclamation ne peut être modifiée que si elle est en attente.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("La réclamation ne peut être modifiée que si elle est en attente.");
+        }
         existingReclamation.setTypeRecl(newReclamation.getTypeRecl());
         existingReclamation.setDescriptionRecl(newReclamation.getDescriptionRecl());
         existingReclamation.setCaptureRecl(newReclamation.getCaptureRecl());
         existingReclamation.setDocumentRecl(newReclamation.getDocumentRecl());
 
-        return reclamationRepository.save(existingReclamation);
+        return ResponseEntity.ok(reclamationRepository.save(existingReclamation));
     }
 
     public Reclamation makeReclamationEnCours(int idReclamation) {
@@ -110,6 +119,8 @@ public class ReclamationService implements IReclamationService {
                 .orElseThrow(() -> new RuntimeException("Réclamation non trouvée avec ID : " + idReclamation));
 
         existingReclamation.setEtatRecl(EtatRecl.REJETEE);
+        existingReclamation.setDateReponRecl(new Date());
+        existingReclamation.setDescriptionReponRecl("Bonjour, Nous vous invitons à préciser votre demande ou réclamation afin de pouvoir y apporter une réponse adaptée dans les meilleurs délais. Merci pour votre compréhension. Cordialement, Web Service Client Tunisie Télécom");
         return reclamationRepository.save(existingReclamation);
     }
 

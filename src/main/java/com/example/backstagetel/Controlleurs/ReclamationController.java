@@ -57,15 +57,32 @@ public class ReclamationController {
         }
     }
 
+//    @PutMapping("/modifierRecl/{id}")
+//    public ResponseEntity<?> modifierReclamation(@PathVariable int id, @RequestBody Reclamation newReclamation) {
+//        try {
+//            Reclamation updatedReclamation = reclamationService.modifierReclamation(id, newReclamation);
+//            return ResponseEntity.ok(updatedReclamation);
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur : " + e.getMessage());
+//        }
+//    }
+
     @PutMapping("/modifierRecl/{id}")
     public ResponseEntity<?> modifierReclamation(@PathVariable int id, @RequestBody Reclamation newReclamation) {
         try {
-            Reclamation updatedReclamation = reclamationService.modifierReclamation(id, newReclamation);
+            ResponseEntity<?> updatedReclamation = reclamationService.modifierReclamation(id, newReclamation);
             return ResponseEntity.ok(updatedReclamation);
-        } catch (RuntimeException e) {
+        }
+        catch (IllegalStateException e) {
+            // Erreur de logique métier (ex: état != EN_ATTENTE)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erreur : " + e.getMessage());
+        }
+        catch (RuntimeException e) {
+            // Réclamation non trouvée ou autre erreur inattendue
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erreur : " + e.getMessage());
         }
     }
+
 
 
     @PutMapping("/en-cours/{idReclamation}")
