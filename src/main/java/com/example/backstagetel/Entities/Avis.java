@@ -19,4 +19,6 @@ public class Avis {
 
     private String descriptionAvis;
 
+
+
 }
