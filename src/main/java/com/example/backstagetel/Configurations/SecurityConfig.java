@@ -78,6 +78,7 @@ public class SecurityConfig {
                           .requestMatchers("/user/creercomptebyadmin").hasAuthority("ROLE_ADMIN")
                           .requestMatchers("/user/agents").hasAuthority("ROLE_ADMIN")
                           .requestMatchers("/user/delete/{id}").hasAuthority("ROLE_ADMIN")
+
                           .requestMatchers("/reclamation/ajouter/{idUser}").hasAuthority("ROLE_CLIENT")
                           .requestMatchers("/reclamation/getReclByUser/{idUser}").hasAnyAuthority("ROLE_CLIENT", "ROLE_AGENT", "ROLE_ADMIN")
                           .requestMatchers("/reclamation/delete/{id}").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN","ROLE_CLIENT")
@@ -85,9 +86,11 @@ public class SecurityConfig {
                           .requestMatchers("/reclamation/modifierRecl/{id}").hasAnyAuthority( "ROLE_AGENT", "ROLE_ADMIN","ROLE_CLIENT")
                           .requestMatchers("/reclamation/en-cours/{idReclamation}").hasAuthority( "ROLE_AGENT")
                           .requestMatchers("/reclamation/rejetee/{idReclamation}").hasAuthority( "ROLE_AGENT")
-
                           .requestMatchers("/reclamation/repondre/{idReclamation}").hasAuthority( "ROLE_AGENT")
 
+                          .requestMatchers("/renseignement/ajouter/{idUser}").hasAuthority( "ROLE_CLIENT")
+                          .requestMatchers("/renseignement/listeRens").hasAnyAuthority( "ROLE_ADMIN", "ROLE_AGENT")
+                         .requestMatchers("/renseignement/repondre/{idRenseignement}").hasAuthority( "ROLE_AGENT")
 
 
 
