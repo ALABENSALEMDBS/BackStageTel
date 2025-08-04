@@ -26,6 +26,9 @@ public class Reclamation {
     private String captureRecl;
     private String documentRecl;
 
+    private int numeroConcerne;
+    private String sujetRecl;
+
     @Enumerated(EnumType.STRING)
     private EtatRecl etatRecl;
 
