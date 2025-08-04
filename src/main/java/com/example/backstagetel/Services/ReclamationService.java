@@ -102,6 +102,8 @@ public class ReclamationService implements IReclamationService {
         existingReclamation.setDescriptionRecl(newReclamation.getDescriptionRecl());
         existingReclamation.setCaptureRecl(newReclamation.getCaptureRecl());
         existingReclamation.setDocumentRecl(newReclamation.getDocumentRecl());
+        existingReclamation.setNumeroConcerne(newReclamation.getNumeroConcerne());
+        existingReclamation.setSujetRecl(newReclamation.getSujetRecl());
 
         return ResponseEntity.ok(reclamationRepository.save(existingReclamation));
     }
