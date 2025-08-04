@@ -106,4 +106,14 @@ public class ReclamationController {
         return ResponseEntity.ok(updatedReclamation);
     }
 
+
+    @GetMapping("/by-user/{email}/{numeroConcerne}")
+    public ResponseEntity<List<Reclamation>> getReclamationsByUserAndNumero(
+            @PathVariable String email,
+            @PathVariable int numeroConcerne) {
+
+        List<Reclamation> reclamations = reclamationService.getReclamationsByUserAndNumeroconcerne(email, numeroConcerne);
+        return ResponseEntity.ok(reclamations);
+    }
+
 }

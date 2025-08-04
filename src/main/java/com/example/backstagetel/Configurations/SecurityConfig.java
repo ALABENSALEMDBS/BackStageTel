@@ -87,6 +87,8 @@ public class SecurityConfig {
                           .requestMatchers("/reclamation/en-cours/{idReclamation}").hasAuthority( "ROLE_AGENT")
                           .requestMatchers("/reclamation/rejetee/{idReclamation}").hasAuthority( "ROLE_AGENT")
                           .requestMatchers("/reclamation/repondre/{idReclamation}").hasAuthority( "ROLE_AGENT")
+                          .requestMatchers("/reclamation/by-user/{email}/{numeroConcerne}").hasAuthority( "ROLE_AGENT")
+
 
                           .requestMatchers("/renseignement/ajouter/{idUser}").hasAuthority( "ROLE_CLIENT")
                           .requestMatchers("/renseignement/listeRens").hasAnyAuthority( "ROLE_ADMIN", "ROLE_AGENT")

@@ -15,5 +15,7 @@ public interface ReclamationRepository extends JpaRepository<Reclamation, Intege
 
     boolean existsByUtilisateurReclAndDateReclBetween(Utilisateur utilisateur, Date start, Date end);
 
+    List<Reclamation> findByUtilisateurRecl_EmailUserAndNumeroConcerne(String emailUser, int numeroConcerne);
+
 
 }

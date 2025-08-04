@@ -160,4 +160,9 @@ public class ReclamationService implements IReclamationService {
         return savedReclamation;
     }
 
+    public List <Reclamation> getReclamationsByUserAndNumeroconcerne(String email, int numeroconcerne){
+
+        return reclamationRepository.findByUtilisateurRecl_EmailUserAndNumeroConcerne(email, numeroconcerne);
+    }
+
 }
