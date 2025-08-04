@@ -25,5 +25,7 @@ public interface IReclamationService {
 
     public Reclamation repondreReclamation(int idReclamation, Reclamation newReclamation);
 
+    public List <Reclamation> getReclamationsByUserAndNumeroconcerne(String email, int numeroconcerne);
+
 
 }
