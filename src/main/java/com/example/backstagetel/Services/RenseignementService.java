@@ -88,4 +88,13 @@ public class RenseignementService implements IRenseignementService{
         return savedRenseignement;
     }
 
+
+
+    public List<Renseignement> getRenseignementByUser(int idUser){
+        Utilisateur utilisateur = utilisateurRepository.findById(idUser)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec ID : " + idUser));
+
+        return renseignementRepository.findByUtilisateurRens(utilisateur);
+    }
+
 }

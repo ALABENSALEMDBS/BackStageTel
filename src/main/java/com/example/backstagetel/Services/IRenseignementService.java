@@ -11,4 +11,6 @@ public interface IRenseignementService {
     public Renseignement ajouterRenseignement(Renseignement renseignement, int idUser);
 
     public Renseignement repondreRenseignement(int idRenseignement, Renseignement newRenseignement);
+
+    public List<Renseignement> getRenseignementByUser(int idUser);
 }
