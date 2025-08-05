@@ -46,4 +46,15 @@ public class RenseignementController {
         Renseignement updatedRenseignement = renseignementService.repondreRenseignement(idRenseignement, newRenseignement);
         return ResponseEntity.ok(updatedRenseignement);
     }
+
+    @GetMapping("/getbyuser/{idUser}")
+    public ResponseEntity<List<Renseignement>> getRenseignementByUser(@PathVariable int idUser) {
+        try {
+            List<Renseignement> renseignements = renseignementService.getRenseignementByUser(idUser);
+            return ResponseEntity.ok(renseignements);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
+

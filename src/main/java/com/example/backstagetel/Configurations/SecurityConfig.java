@@ -91,6 +91,7 @@ public class SecurityConfig {
 
 
                           .requestMatchers("/renseignement/ajouter/{idUser}").hasAuthority( "ROLE_CLIENT")
+                          .requestMatchers("/renseignement/getbyuser/{idUser}").hasAuthority( "ROLE_CLIENT")
                           .requestMatchers("/renseignement/listeRens").hasAnyAuthority( "ROLE_ADMIN", "ROLE_AGENT")
                          .requestMatchers("/renseignement/repondre/{idRenseignement}").hasAuthority( "ROLE_AGENT")
 
