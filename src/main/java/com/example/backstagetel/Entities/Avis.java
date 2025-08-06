@@ -18,6 +18,7 @@ public class Avis {
     private int idAvis;
 
     private String descriptionAvis;
+    private int note;
 
 
 
