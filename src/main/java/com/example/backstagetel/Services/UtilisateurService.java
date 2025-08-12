@@ -269,5 +269,7 @@ public class UtilisateurService implements UserDetailsService,IUtilisateurServic
         utilisateurRepository.delete(utilisateur);
     }
 
-
+    public boolean checkEmailExists(String email) {
+        return utilisateurRepository.existsByEmailUser(email);
+    }
 }

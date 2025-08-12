@@ -147,6 +147,11 @@ public class UtilisateurController {
 
 
 
+    @GetMapping("/check-email-exists")
+    public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
+        boolean exists = utilisateurService.checkEmailExists(email);
+        return ResponseEntity.ok(exists);
+    }
 
 
     private final String uploadDir = "C:/xampp/htdocs/document/";
