@@ -46,7 +46,29 @@ public class RenseignementService implements IRenseignementService{
 
         renseignement.setDateRens(new Date());
         renseignement.setUtilisateurRens(utilisateur);
-        return renseignementRepository.save(renseignement);
+        Renseignement savedRenseignement = renseignementRepository.save(renseignement);
+        if (savedRenseignement != null) {
+            // Préparation du sujet et message pour l'email de confirmation
+            String subject = "Confirmation de réception de votre renseignement n°" + savedRenseignement.getIdRens();
+
+            String message = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;'>" +
+                    "<div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);'>" +
+                    "<h2 style='color: #2e6c80;'>Votre renseignement a bien été enregistré</h2>" +
+                    "<p>Bonjour " + utilisateur.getNomUser() + ",</p>" +
+                    "<p>Nous avons bien reçu votre renseignement. Voici les détails :</p>" +
+                    "<blockquote style='border-left: 4px solid #2e6c80; margin: 20px 0; padding: 10px 20px; background-color: #f0f8ff;'>" +
+                    savedRenseignement.getDescriptionRens() +
+                    "</blockquote>" +
+                    "<p>Date de création : <strong>" + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(savedRenseignement.getDateRens()) + "</strong></p>" +
+                    "<p>Notre équipe traitera votre demande dans les plus brefs délais.</p>" +
+                    "<br><p>Cordialement,<br><strong>L'équipe de support</strong></p>" +
+                    "</div>" +
+                    "</body></html>";
+
+            emailService.send(utilisateur.getEmailUser(), subject, message);
+        }
+        return savedRenseignement;
     }
 
     public List<Renseignement> findAllRenseignements() {
