@@ -22,16 +22,23 @@ public class AvisController {
 
 
     // Add a new Avis
-    @PostMapping("/add")
-    public ResponseEntity<?> addAvis(@RequestBody Avis avis) {
-        try {
-            Avis newAvis = avisService.addAvis(avis);
-            return ResponseEntity.ok(newAvis);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to add Avis: " + e.getMessage());
-        }
+    @PostMapping("/add/{idReclamation}")
+//    public ResponseEntity<?> addAvis(@RequestBody Avis avis) {
+//        try {
+//            Avis newAvis = avisService.addAvis(avis);
+//            return ResponseEntity.ok(newAvis);
+//        } catch (Exception e) {
+//            return ResponseEntity
+//                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Failed to add Avis: " + e.getMessage());
+//        }
+//    }
+    public ResponseEntity<Avis> addAvis(
+            @PathVariable int idReclamation,
+            @RequestBody Avis avis
+    ) {
+        Avis savedAvis = avisService.addAvis(avis, idReclamation);
+        return ResponseEntity.ok(savedAvis);
     }
 
     // Retrieve all Avis

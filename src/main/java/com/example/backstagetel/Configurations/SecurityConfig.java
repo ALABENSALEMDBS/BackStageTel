@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/auth/login",
                                 "/user/auth/register",
+                                "/user/check-email-exists",
                                 "/user/auth/logout",
                                 "/swagger-ui.html",
                                 "/swagger-ui/index.html",
@@ -95,7 +96,7 @@ public class SecurityConfig {
                           .requestMatchers("/renseignement/listeRens").hasAnyAuthority( "ROLE_ADMIN", "ROLE_AGENT")
                          .requestMatchers("/renseignement/repondre/{idRenseignement}").hasAuthority( "ROLE_AGENT")
 
-                         .requestMatchers("/avis/add").hasAuthority( "ROLE_CLIENT")
+                         .requestMatchers("/avis/add/{idReclamation}").hasAuthority( "ROLE_CLIENT")
                          .requestMatchers("/avis/all").hasAnyAuthority( "ROLE_ADMIN", "ROLE_AGENT")
 
 

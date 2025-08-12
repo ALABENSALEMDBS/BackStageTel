@@ -41,4 +41,7 @@ public class Reclamation {
     @ManyToOne
     Utilisateur utilisateurRecl;
 
+    @OneToOne
+    Avis avisRecl;
+
 }
